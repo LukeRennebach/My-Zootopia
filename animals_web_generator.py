@@ -1,5 +1,9 @@
 import json
 
+with open("animals_template.html", "r") as fileobj:
+    html = fileobj.read()
+
+
 
 def load_data(file_path):
     """ Loads a JSON file """
@@ -31,16 +35,19 @@ def main():
     locations = find_location(data)
     types = find_type(data)
 
+    output = ""
     for name, diet, location, animal_type in zip(names, diets, locations, types):
-        print(f"Name: {name}")
+        output += f"Name: {name}\n"
         if diet:
-            print(f"Diet: {diet}")
+            output += f"Diet: {diet}\n"
         if location:
-            print(f"Location: {location}")
+            output += f"Location: {location}\n"
         if animal_type:
-            print(f"Type: {animal_type}")
-        print()
+            output += f"Type: {animal_type}\n"
+        output += "\n"
 
+
+    new_html = html.replace("__REPLACE_ANIMALS_INFO__", output)
 
 if __name__ == "__main__":
     main()
