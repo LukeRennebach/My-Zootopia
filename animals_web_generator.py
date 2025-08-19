@@ -87,11 +87,15 @@ def create_new_html(animals):
 def main():
     """Process animal data and generate HTML."""
     name = input("Enter a name of an animal: ").strip().lower()
-    if not name:
+    if not name.isalpha():
         print("No input provided.")
         return
 
     animals = call_api(name)
+    if not animals:
+        print(f"No results found for '{name}'.")
+        return
+
     html = load_template()
     output = create_new_html(animals)
     write_new_html(html, output)
