@@ -1,27 +1,8 @@
-import os
-import requests
-from dotenv import load_dotenv
-
-load_dotenv()
-
-API_KEY = os.getenv("NINJAS_API_KEY")
-
-
-def call_api(name):
-    """Call the API with the given animal name."""
-    api_url = (
-        "https://api.api-ninjas.com/v1/animals?name={}".format(name)
-    )
-    response = requests.get(api_url, headers={"X-Api-Key": API_KEY})
-    if response.status_code == requests.codes.ok:
-        return response.json()
-    print("Error:", response.status_code, response.text)
-    return []
-
+from data_fetcher import call_api
 
 def load_template():
     """Read the HTML template file."""
-    with open("animals_template.html", "r", encoding="utf-8") as fileobj:
+    with open("template/animals_template.html", "r", encoding="utf-8") as fileobj:
         return fileobj.read()
 
 
@@ -51,7 +32,7 @@ def find_type(animals):
 def write_new_html(html, output):
     """Write the modified HTML content to a new file."""
     new_html = html.replace("__REPLACE_ANIMALS_INFO__", output)
-    output_path = "animals.html"
+    output_path = "template/animals.html"
     with open(output_path, "w", encoding="utf-8") as handle:
         handle.write(new_html)
     print(f"Website was successfully generated to the file {output_path}.")
