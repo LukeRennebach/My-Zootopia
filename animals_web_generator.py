@@ -31,7 +31,13 @@ def find_type(animals):
 
 def write_new_html(html, output):
     """Write the modified HTML content to a new file."""
-    new_html = html.replace("__REPLACE_ANIMALS_INFO__", output)
+    if output.strip():
+        new_html = html.replace("__REPLACE_ANIMALS_INFO__", output)
+    else:
+        new_html = html.replace(
+            "__REPLACE_ANIMALS_INFO__",
+            '<p class="no-results">No animals found for your search.</p>'
+        )
     output_path = "template/animals.html"
     with open(output_path, "w", encoding="utf-8") as handle:
         handle.write(new_html)
@@ -74,7 +80,8 @@ def main():
 
     animals = call_api(name)
     if not animals:
-        print(f"No results found for '{name}'.")
+        html = load_template()
+        write_new_html(html, "")
         return
 
     html = load_template()
